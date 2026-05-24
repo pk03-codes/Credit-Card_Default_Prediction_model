@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}CreditGuard AI — Credit Card Default Prediction{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero">
+    <h1>Credit Card Default <span class="accent">Prediction</span></h1>
+    <p class="hero-sub">A machine learning model that predicts whether a credit card client is likely to default on their next payment — helping institutions make smarter, data-driven decisions.</p>
+    <a href="{{ url_for('predict_page') }}" class="btn">Try the Predictor &rarr;</a>
+
+    <div class="hero-stats">
+        <div class="stat">
+            <strong>30,000</strong>
+            <span>Training Records</span>
+        </div>
+        <div class="stat">
+            <strong>23</strong>
+            <span>Features Used</span>
+        </div>
+        <div class="stat">
+            <strong>82%+</strong>
+            <span>Model Accuracy</span>
+        </div>
+    </div>
+</section>
+
+<!-- Problem -->
+<section class="section" id="about">
+    <div class="container">
+        <h2 class="section-title">Why This Problem Matters</h2>
+        <p class="section-sub">Credit card defaults cause massive financial losses and affect millions of people. Traditional methods rely on lagging indicators — this model takes a proactive, data-driven approach.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">💸</div>
+                <h3>Massive Losses</h3>
+                <p>Banks lose hundreds of billions annually to credit card defaults, raising interest rates for everyone.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📉</div>
+                <h3>Reactive Systems</h3>
+                <p>Most scoring systems only flag defaults after payments are missed — too late for early action.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <h3>ML Solution</h3>
+                <p>A trained model can detect subtle risk patterns months before a default occurs, enabling intervention.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What I Built -->
+<section class="section section-gray" id="solution">
+    <div class="container">
+        <h2 class="section-title">What I Built</h2>
+        <p class="section-sub">Trained on the UCI Credit Card Default dataset — 30,000 real client records from Taiwan with 23 behavioral and demographic features.</p>
+
+        <div class="pipeline">
+            <div class="pipe-step">
+                <span class="pipe-num">1</span>
+                <div>
+                    <h4>Data Collection</h4>
+                    <p>UCI dataset — 30,000 clients, 23 features</p>
+                </div>
+            </div>
+            <div class="pipe-arrow">&rarr;</div>
+            <div class="pipe-step">
+                <span class="pipe-num">2</span>
+                <div>
+                    <h4>Preprocessing</h4>
+                    <p>Feature engineering, scaling, SMOTE balancing</p>
+                </div>
+            </div>
+            <div class="pipe-arrow">&rarr;</div>
+            <div class="pipe-step">
+                <span class="pipe-num">3</span>
+                <div>
+                    <h4>Model Training</h4>
+                    <p>Algorithm selection, tuning, cross-validation</p>
+                </div>
+            </div>
+            <div class="pipe-arrow">&rarr;</div>
+            <div class="pipe-step pipe-step-active">
+                <span class="pipe-num">4</span>
+                <div>
+                    <h4>Web Prediction</h4>
+                    <p>Flask API for real-time risk scoring</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="features">
+    <div class="container">
+        <h2 class="section-title">Features Used</h2>
+        <p class="section-sub">The model uses 23 features across four categories.</p>
+        <div class="feat-grid">
+            <div class="feat-box">
+                <h4>👤 Demographics</h4>
+                <ul>
+                    <li>Age</li>
+                    <li>Gender</li>
+                    <li>Education</li>
+                    <li>Marital Status</li>
+                    <li>Credit Limit</li>
+                </ul>
+            </div>
+            <div class="feat-box">
+                <h4>🔁 Repayment Status</h4>
+                <ul>
+                    <li>Pay status — Sep</li>
+                    <li>Pay status — Aug</li>
+                    <li>Pay status — Jul</li>
+                    <li>Pay status — Jun</li>
+                    <li>Pay status — May</li>
+                    <li>Pay status — Apr</li>
+                </ul>
+            </div>
+            <div class="feat-box">
+                <h4>📄 Bill Amounts</h4>
+                <ul>
+                    <li>Bill — Sep</li>
+                    <li>Bill — Aug</li>
+                    <li>Bill — Jul</li>
+                    <li>Bill — Jun</li>
+                    <li>Bill — May</li>
+                    <li>Bill — Apr</li>
+                </ul>
+            </div>
+            <div class="feat-box">
+                <h4>💳 Payment Amounts</h4>
+                <ul>
+                    <li>Paid — Sep</li>
+                    <li>Paid — Aug</li>
+                    <li>Paid — Jul</li>
+                    <li>Paid — Jun</li>
+                    <li>Paid — May</li>
+                    <li>Paid — Apr</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Test the Model?</h2>
+        <p>Enter a client's financial profile and get an instant default risk prediction.</p>
+        <a href="{{ url_for('predict_page') }}" class="btn btn-white">Launch Prediction Tool &rarr;</a>
+    </div>
+</section>
+
+{% endblock %}

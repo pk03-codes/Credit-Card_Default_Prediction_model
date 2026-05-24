@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Predictor — CreditGuard AI{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Home</a>
+        <h1>Default Risk <span class="accent">Predictor</span></h1>
+        <p>Fill in the client details below and submit to get an instant prediction.</p>
+    </div>
+</section>
+
+<section class="predict-section">
+    <div class="container">
+
+        <!-- Result (shown after form submit) -->
+        {% if result %}
+        <div class="result-box result-{{ result.risk_class }}">
+            <h2>
+                {% if result.prediction == 1 %}⚠️ Default Expected{% else %}✅ No Default Expected{% endif %}
+            </h2>
+            <div class="result-details">
+                <div class="result-item">
+                    <span>Default Probability</span>
+                    <strong>{{ (result.probability * 100) | round(1) }}%</strong>
+                </div>
+                <div class="result-item">
+                    <span>Risk Level</span>
+                    <strong class="badge badge-{{ result.risk_class }}">{{ result.risk_level }}</strong>
+                </div>
+                <div class="result-item">
+                    <span>Confidence</span>
+                    <strong>{{ (result.confidence * 100) | round(1) }}%</strong>
+                </div>
+            </div>
+            <p class="result-note">This prediction is for research/educational purposes only.</p>
+        </div>
+        {% endif %}
+
+        <!-- Prediction Form -->
+        <form action="{{ url_for('predict') }}" method="POST">
+
+            <!-- Section 1: Demographics -->
+            <div class="form-section">
+                <h3 class="form-section-title"><span class="step-badge">1</span> Client Demographics</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="limit_bal">Credit Limit (NT$)</label>
+                        <input type="number" id="limit_bal" name="limit_bal" placeholder="e.g. 50000" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" placeholder="e.g. 35" min="18" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Gender</label>
+                        <select id="sex" name="sex" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="education">Education</label>
+                        <select id="education" name="education" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Graduate School</option>
+                            <option value="2">University</option>
+                            <option value="3">High School</option>
+                            <option value="4">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="marriage">Marital Status</label>
+                        <select id="marriage" name="marriage" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Married</option>
+                            <option value="2">Single</option>
+                            <option value="3">Others</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Repayment Status -->
+            <div class="form-section">
+                <h3 class="form-section-title"><span class="step-badge">2</span> Repayment Status (Last 6 Months)</h3>
+                <p class="form-hint">-1 = paid on time &nbsp;|&nbsp; 0 = minimum payment &nbsp;|&nbsp; 1–9 = months delayed</p>
+                <div class="form-row">
+                    {% for name, label in [('pay_0','September'), ('pay_2','August'), ('pay_3','July'), ('pay_4','June'), ('pay_5','May'), ('pay_6','April')] %}
+                    <div class="form-group">
+                        <label>{{ label }}</label>
+                        <select name="{{ name }}" required>
+                            <option value="" disabled selected>Status</option>
+                            <option value="-2">No consumption</option>
+                            <option value="-1">Paid on time</option>
+                            <option value="0">Min. payment</option>
+                            <option value="1">1 month late</option>
+                            <option value="2">2 months late</option>
+                            <option value="3">3 months late</option>
+                            <option value="4">4 months late</option>
+                            <option value="5">5 months late</option>
+                            <option value="6">6 months late</option>
+                            <option value="7">7 months late</option>
+                            <option value="8">8 months late</option>
+                            <option value="9">9+ months late</option>
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Section 3: Bill Amounts -->
+            <div class="form-section">
+                <h3 class="form-section-title"><span class="step-badge">3</span> Bill Statement Amounts — NT$ (Last 6 Months)</h3>
+                <div class="form-row">
+                    {% for name, label in [('bill_amt1','September'), ('bill_amt2','August'), ('bill_amt3','July'), ('bill_amt4','June'), ('bill_amt5','May'), ('bill_amt6','April')] %}
+                    <div class="form-group">
+                        <label>{{ label }}</label>
+                        <input type="number" name="{{ name }}" placeholder="e.g. 12000" required>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Section 4: Payment Amounts -->
+            <div class="form-section">
+                <h3 class="form-section-title"><span class="step-badge">4</span> Previous Payment Amounts — NT$ (Last 6 Months)</h3>
+                <div class="form-row">
+                    {% for name, label in [('pay_amt1','September'), ('pay_amt2','August'), ('pay_amt3','July'), ('pay_amt4','June'), ('pay_amt5','May'), ('pay_amt6','April')] %}
+                    <div class="form-group">
+                        <label>{{ label }}</label>
+                        <input type="number" name="{{ name }}" placeholder="e.g. 2000" min="0" required>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-submit">Predict Default Risk &rarr;</button>
+
+        </form>
+    </div>
+</section>
+
+{% endblock %}
